@@ -139,8 +139,9 @@ private:
     void preOrderTraversal(TreeNode* t,vector<ItemType>& result) const;
     void postOrderTraversal(TreeNode* t,vector<ItemType>& result) const;
     void copyTree(TreeNode*& copy, const TreeNode *originalTree);
+    bool isIteminTreehelp(TreeNode* t, ItemType &item);
 
-};
+    };
 
 /*******************************
 //Function implementations
@@ -247,7 +248,18 @@ void BST_312 <ItemType>::deleteItem(const ItemType& newItem)
 template<class ItemType>
 void BST_312 <ItemType>::makeEmpty(TreeNode*& t)
 {
-    //YOUR CODE GOES HERE
+   if((t->right== NULL) && (t->left== NULL)){
+       deleteNode(t);
+   }
+   else {
+       if (t->left != NULL) {
+       makeEmpty(t->left);
+       }
+       if (t->right != NULL) {
+           makeEmpty(t->right);
+       }
+   }
+   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
 
 template<class ItemType>
@@ -286,78 +298,173 @@ template<class ItemType>
 void BST_312 <ItemType>::insertItem(TreeNode*& t, const ItemType& newItem)
 {
 
-    //YOUR CODE GOES HERE
+    if(t == NULL){
+        TreeNode * temp = new TreeNode;
+        t = temp;
+        temp->data = newItem;
+        temp->left = NULL;
+        temp->right = NULL;
+    }
+    else if(newItem < t->data){
+        insertItem(t->left, newItem);
+    }
+    else if(newItem > t->data){
+        insertItem(t->right, newItem);
+    }
+    else{
+        //do nothing
+    }
+
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=====++++++++++++++++++++++++++++++++++++++++++++
 
 }
 
 template<class ItemType>
 void BST_312 <ItemType>::insertItem(const ItemType& newItem)
 {
-    //YOUR CODE GOES HERE
+    insertItem(this->root, newItem);
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
 
 
 
 template<class ItemType>
-int BST_312 <ItemType>::countNodes(TreeNode* t) const
-{
-    //YOUR CODE GOES HERE
+int BST_312 <ItemType>::countNodes(TreeNode* t) const {
+
+    int nodecount = 0;
+    if ((t->right == NULL) && (t->left == NULL)) {
+        return (nodecount + 1);
+    }
+    else {
+        if (t->left != NULL){
+        nodecount = nodecount + countNodes(t->left);
+        }
+        if (t->right != NULL) {
+        nodecount = nodecount + countNodes(t->right);
+        }
+        return (nodecount+1);
+    }
+    //+++++++++++++++++++++++++++++++++++======================================================================
 
 }
 
 
 template<class ItemType>
-int BST_312 <ItemType>::countNodes()
-{
+int BST_312 <ItemType>::countNodes() {
     //YOUR CODE GOES HERE
+    int nodeCount = 0;
+    if(this->root != NULL){
+        if(this->root->left != NULL) {
+            nodeCount = nodeCount + countNodes(this->root->left);
+        }
+        if(this->root->right!= NULL) {
+            nodeCount = nodeCount + countNodes(this->root->right);
+        }
+        return(nodeCount+1);
+    }
+    else{
+        return(nodeCount);
+    }
+    //+======================================================================================================
 }
+
+
+
 
 template<class ItemType>
 void BST_312 <ItemType>::preOrderTraversal(TreeNode* t,vector<ItemType>& result) const
 {
-    //YOUR CODE GOES HERE
+    if(t != NULL){
+        result.push_back(t->data);
+        preOrderTraversal(t->left, result);
+        preOrderTraversal(t->right, result);
+    }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
 
 
 template<class ItemType>
 vector<ItemType> BST_312 <ItemType>::preOrderTraversal()
 {
-    //YOUR CODE GOES HERE
+    TreeNode * temp = this->root;
+    vector<ItemType> returnvector;
+    this->preOrderTraversal(temp, returnvector);
 
+    return(returnvector);
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
 
 template<class ItemType>
 void BST_312 <ItemType>::inOrderTraversal(TreeNode* t,vector<ItemType>& result) const
 {
-    //YOUR CODE GOES HERE
+    //LNR
+    if(t != NULL){
+        inOrderTraversal(t->left, result);
+        result.push_back(t->data);
+        inOrderTraversal(t->right, result);
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 }
 
 template<class ItemType>
 vector<ItemType> BST_312 <ItemType>::inOrderTraversal()
 {
-    //YOUR CODE GOES HERE
+    TreeNode *temp = this->root;
+    vector<ItemType> returnvector;
+    this->inOrderTraversal(temp, returnvector);
+
+    return(returnvector);
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
 
 template<class ItemType>
 void BST_312 <ItemType>::postOrderTraversal(TreeNode* t,vector<ItemType>& result) const
 {
-
-    //YOUR CODE GOES HERE
+    //LRN
+    if(t!= NULL){
+        postOrderTraversal(t->left, result);
+        postOrderTraversal(t->right, result);
+        result.push_back(t->data);
+    }
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
 
 template<class ItemType>
 vector<ItemType> BST_312 <ItemType>::postOrderTraversal()
 {
-    //YOUR CODE GOES HERE
+    TreeNode *temp = this->root;
+    vector<ItemType> returnvector;
+    postOrderTraversal(temp, returnvector);
+
+    return(returnvector);
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
 
 template<class ItemType>
 bool BST_312 <ItemType>::isItemInTree(const ItemType& item)
 {
+    return(isIteminTreehelp(this->root, item));
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  //YOUR CODE GOES HERE
 
+}
+template <class ItemType>
+bool BST_312 <ItemType>::isIteminTreehelp(TreeNode * t, ItemType& item)
+{
+    if ( t == NULL){
+        return (false);
+    }
+    else if( item < t->data){
+        isIteminTreehelp(t->left, item);
+    }
+    else if( item < t->data){
+        isIteminTreehelp(t->right, item);
+    }
+    else{
+        return (true);
+    }
 }
 #endif
 

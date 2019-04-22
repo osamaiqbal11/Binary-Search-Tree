@@ -25,10 +25,12 @@ int main() {
     inFile.open("test.txt");
 
     BST_312<string> bst;
-   
+
     string s;
     inFile >> s;
-    while (inFile) {;
+    if (inFile)
+        cout << "yes\n";
+    while (inFile) { ;
         cout << "inserting ... " << s << endl;
         bst.insertItem(s);
         inFile >> s;
@@ -55,5 +57,11 @@ int main() {
     cout << "number of nodes in tree after delete is " << bst.countNodes() << endl;
     cout << endl;
 
+    bst.makeEmpty();
+    if (bst.isEmpty()) {
+    cout << bst.countNodes() <<"\n";
+    }
+
+   vector<string> *temp = new vector <string>;
 }
 
