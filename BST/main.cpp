@@ -58,10 +58,10 @@ int main() {
     cout << endl;
 
     bst.makeEmpty();
-    if (bst.isEmpty()) {
-    cout << bst.countNodes() <<"\n";
-    }
 
-   vector<string> *temp = new vector <string>;
+
+
+    return 0;
+
 }
 
